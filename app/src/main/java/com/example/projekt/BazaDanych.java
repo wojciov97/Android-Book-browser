@@ -6,12 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class BazaDanych extends SQLiteOpenHelper {
+public class    BazaDanych extends SQLiteOpenHelper {
 
     private static String tableName = "books";
-    private static String nameDB = "book1.db";
+    private static String nameDB = "books.db";
     private static String author_col = "AUTHOR";
     private static String title_col  = "TITLE";
+    private static String pubHouse_col = "HOUSE";
     private static String img_col = "PATH";
     private static String img_path = "@drawable/";
     private static String id_col = "ID";
@@ -23,7 +24,7 @@ public class BazaDanych extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "create table " + tableName + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, AUTHOR TEXT, PATH TEXT)"
+                "create table " + tableName + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, AUTHOR TEXT, HOUSE TEXT, PATH TEXT)"
                     );
     }
 
@@ -32,20 +33,24 @@ public class BazaDanych extends SQLiteOpenHelper {
 
     }
 
-    public void addBook (String title, String author,String path){
+    public void addBook (String title, String author,String pubHouse, String path){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(title_col,title);
         values.put(author_col, author);
-        values.put(img_col,path);
+        values.put(pubHouse_col,pubHouse);
+        values.put(img_col,img_path+path);
         db.insertOrThrow(tableName,null,values);
     }
 
     public Cursor getAll(){
-        String [] col = {id_col,title_col,author_col, img_col};
+        String [] col = {id_col,title_col,author_col,pubHouse_col, img_col};
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(tableName,col,null,null,null,null,null);
+//        db.execSQL("DELETE FROM "+tableName);
         return cursor;
     }
+
+
 
 }
