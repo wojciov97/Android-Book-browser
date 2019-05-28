@@ -30,7 +30,8 @@ public class    BazaDanych extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS "+ tableName);
+        onCreate(db);
     }
 
     public void addBook (String title, String author,String pubHouse, String path){
