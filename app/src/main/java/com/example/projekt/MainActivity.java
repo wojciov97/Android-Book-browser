@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             authorList.add(buff.getString(2));
             pathList.add(buff.getString(4));
             pubHouseList.add(buff.getString(3));
+
         }
         ArrayAdapter adapterTitle = new ArrayAdapter(this, android.R.layout.simple_list_item_1, titleList);
         list.setAdapter(adapterTitle);
@@ -74,11 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         list = (ListView) findViewById(R.id.listaautorow);
 
-
-
-//        showAll(list);
-
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -91,6 +87,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showAll(list);
-        Toast.makeText(getApplicationContext(),"onResume", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),pathList.get(0),Toast.LENGTH_LONG).show();
     }
 }

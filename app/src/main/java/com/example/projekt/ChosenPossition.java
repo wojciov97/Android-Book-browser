@@ -1,9 +1,13 @@
 package com.example.projekt;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,6 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class ChosenPossition extends AppCompatActivity {
+
 
     ImageView imgView;
     TextView txtAutor, txtTytul, txtWydawnictwo;
@@ -26,6 +31,7 @@ public class ChosenPossition extends AppCompatActivity {
         ArrayList <String> pathList  = new ArrayList<>();
         ArrayList <String> authorList  = new ArrayList<>();
         ArrayList <String> pubHouseList  = new ArrayList<>();
+
 
              int position = getIntent().getIntExtra("pozycja", -1) ;
             titleList = getIntent().getStringArrayListExtra("titleList");

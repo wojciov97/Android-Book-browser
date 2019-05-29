@@ -40,7 +40,7 @@ public class    BazaDanych extends SQLiteOpenHelper {
         values.put(title_col,title);
         values.put(author_col, author);
         values.put(pubHouse_col,pubHouse);
-        values.put(img_col,img_path+path);
+        values.put(img_col,path);
         db.insertOrThrow(tableName,null,values);
     }
 
