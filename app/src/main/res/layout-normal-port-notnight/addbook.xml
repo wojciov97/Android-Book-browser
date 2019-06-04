@@ -36,29 +36,38 @@
         android:id="@+id/btnConfirmAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:text="Dodaj książkę"
-        app:layout_constraintTop_toBottomOf="@+id/btnPhoto"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="7dp" />
 
     <Button
         android:id="@+id/btnPhoto"
-        android:layout_width="182dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="175dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Zrób zdjęcie"
         app:layout_constraintStart_toEndOf="@+id/imgPodglad"
         app:layout_constraintTop_toBottomOf="@+id/txtPubHouse" />
 
+    <Button
+        android:id="@+id/btnGallery"
+        android:layout_width="178dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="44dp"
+        android:text="Przeglądaj galerię"
+        app:layout_constraintStart_toEndOf="@+id/imgPodglad"
+        app:layout_constraintTop_toBottomOf="@+id/btnPhoto" />
+
     <ImageView
         android:id="@+id/imgPodglad"
-        android:layout_width="154dp"
-        android:layout_height="121dp"
+        android:layout_width="159dp"
+        android:layout_height="265dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/txtPubHouse"
         app:srcCompat="@android:color/white"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="7dp" />
 
 
 </android.support.constraint.ConstraintLayout>

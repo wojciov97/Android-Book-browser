@@ -1,6 +1,8 @@
 package com.example.projekt;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ChosenPossition extends AppCompatActivity {
@@ -40,9 +43,11 @@ public class ChosenPossition extends AppCompatActivity {
             pubHouseList = getIntent().getStringArrayListExtra("pubHouseList");
 
                 imgView = (ImageView) findViewById(R.id.imageView);
-                int imageres =getResources().getIdentifier(pathList.get(position),null,getPackageName());
-                Drawable res =getResources().getDrawable(imageres);
-                imgView.setImageDrawable(res);
+                File image = new File(pathList.get(position));
+                if(image.exists()){
+                    Bitmap bitmap = BitmapFactory.decodeFile(pathList.get(position));
+                    imgView.setImageBitmap(bitmap);
+                }
                 txtAutor = (TextView) findViewById(R.id.txtAutor);
                 txtTytul = (TextView) findViewById(R.id.txtTytul);
                 txtWydawnictwo = (TextView) findViewById(R.id.txtWydawnictwo);

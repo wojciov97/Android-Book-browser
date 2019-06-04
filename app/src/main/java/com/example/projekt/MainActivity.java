@@ -87,6 +87,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showAll(list);
-        Toast.makeText(getApplicationContext(),pathList.get(0),Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),pathList.get(0),Toast.LENGTH_LONG).show();
     }
 }

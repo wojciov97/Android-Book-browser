@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
@@ -42,16 +43,6 @@ public class Add_Book extends AppCompatActivity {
     BazaDanych db = new BazaDanych(this);
     ImageView imgPodglad;
 
-//
-//@Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        if (requestCode == CAMERA_PERMISSION_CODE)  {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
-//            }
-//        }
 
     private void requestCameraPermisson(){
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA )){
@@ -121,7 +112,7 @@ public class Add_Book extends AppCompatActivity {
                         else {
                             Toast.makeText(getApplicationContext(),path, Toast.LENGTH_SHORT).show();
                             db.addBook(title, author, pubhouse, path);
-                            Toast.makeText(getApplicationContext(),"Dodano pomyślnie", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(),"Dodano pomyślnie", Toast.LENGTH_SHORT).show();
                             txtAuthor.setText("");
                            // txtPath.setText("");
                             txtPubHouse.setText("");
@@ -135,15 +126,22 @@ public class Add_Book extends AppCompatActivity {
 
             }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//            if (requestCode == requestCameraCode) {
-//                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//                imgPodglad.setImageBitmap(bitmap);
-//
-//            }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == requestCameraCode) {
+                File image = new File(path);
+//                Toast.makeText(getApplicationContext(), path, Toast.LENGTH_LONG).show();
+                if(image.exists()) {
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
+                    imgPodglad.setImageBitmap(bitmap);
+
+                }
+                else
+                    Toast.makeText(getApplicationContext(),"NIE ISTNIEJE",Toast.LENGTH_LONG).show();
+            }
+    }
 
     private  String takePhoto(){
 
@@ -155,7 +153,6 @@ public class Add_Book extends AppCompatActivity {
         String nazwapliku = "okladka_"+c.get(Calendar.YEAR)+"_"+c.get(Calendar.MONTH)+"_"+c.get(Calendar.DAY_OF_MONTH)+"_"
                 +c.get(Calendar.HOUR_OF_DAY)+"_"+c.get(Calendar.MINUTE)+"_"+c.get(Calendar.SECOND);
         String rozszerzenie = ".jpg";
-//        File katalog =Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File katalog = new File(Environment.getExternalStorageDirectory()+"/Book_Browser");
         if (!katalog.exists()){
             katalog.mkdir();
@@ -168,11 +165,9 @@ public class Add_Book extends AppCompatActivity {
         }
         intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(okladka));
         startActivityForResult(intent,requestCameraCode);
-        String sciezka = katalog.getAbsolutePath()+"/"+nazwapliku+rozszerzenie;
+        String sciezka = okladka.getAbsolutePath();
 
             return sciezka;
             }
-
-
 }
 
