@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -30,19 +31,20 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Add_Book extends AppCompatActivity {
 
-    private int CAMERA_PERMISSION_CODE = 1, requestCameraCode =1;
-    Button btnPhoto, btnConfirmAdd ;
+    private int CAMERA_PERMISSION_CODE = 1, requestCameraCode =1, requestGalleryCode = 2;
+    Button btnPhoto, btnConfirmAdd,btnGallery ;
     String author, title, pubhouse, path;
     EditText txtAuthor, txtTitle, txtPubHouse, txtPath;
     BazaDanych db = new BazaDanych(this);
     ImageView imgPodglad;
-
+    Uri imageURI;
 
     private void requestCameraPermisson(){
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA )){
@@ -83,7 +85,7 @@ public class Add_Book extends AppCompatActivity {
                 }
                 else{
                     requestCameraPermisson();
-//                    Toast.makeText(getApplicationContext(),"SA uprawnienia", Toast.LENGTH_SHORT).show();
+
                 }
 
 
@@ -110,9 +112,9 @@ public class Add_Book extends AppCompatActivity {
                             return;
                         }
                         else {
-                            Toast.makeText(getApplicationContext(),path, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(),path, Toast.LENGTH_SHORT).show();
                             db.addBook(title, author, pubhouse, path);
-//                            Toast.makeText(getApplicationContext(),"Dodano pomyślnie", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Dodano pomyślnie", Toast.LENGTH_SHORT).show();
                             txtAuthor.setText("");
                            // txtPath.setText("");
                             txtPubHouse.setText("");
@@ -124,6 +126,15 @@ public class Add_Book extends AppCompatActivity {
                     }
                 });
 
+
+                btnGallery = (Button) findViewById(R.id.btnGallery);
+                btnGallery.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openGallery();
+                    }
+                });
+
             }
 
     @Override
@@ -131,15 +142,20 @@ public class Add_Book extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == requestCameraCode) {
                 File image = new File(path);
-//                Toast.makeText(getApplicationContext(), path, Toast.LENGTH_LONG).show();
                 if(image.exists()) {
 
                     Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
                     imgPodglad.setImageBitmap(bitmap);
 
                 }
+
                 else
                     Toast.makeText(getApplicationContext(),"NIE ISTNIEJE",Toast.LENGTH_LONG).show();
+            }
+            if (requestCode == requestGalleryCode){
+                imageURI = data.getData();
+                path = getPathFromURI(imageURI);
+                imgPodglad.setImageURI(imageURI);
             }
     }
 
@@ -169,5 +185,23 @@ public class Add_Book extends AppCompatActivity {
 
             return sciezka;
             }
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, requestGalleryCode);
+
+
+
+    }
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
 }
 

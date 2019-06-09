@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 public class    BazaDanych extends SQLiteOpenHelper {
 
     private static String tableName = "books";
@@ -50,6 +52,17 @@ public class    BazaDanych extends SQLiteOpenHelper {
         Cursor cursor = db.query(tableName,col,null,null,null,null,null);
 //        db.execSQL("DELETE FROM "+tableName);
         return cursor;
+    }
+
+    public ArrayList<String> lookFor(String name){
+        Cursor cursor = getAll();
+        ArrayList <String> names = new ArrayList<>();
+        while( cursor.moveToNext()){
+            if(cursor.getString(1) == name){
+                names.add(cursor.getString(1));
+            }
+        }
+        return names;
     }
 
 

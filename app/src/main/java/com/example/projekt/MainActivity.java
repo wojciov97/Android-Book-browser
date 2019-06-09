@@ -5,8 +5,11 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList <String> pathList  = new ArrayList<>();
     ArrayList <String> authorList  = new ArrayList<>();
     ArrayList <String> pubHouseList  = new ArrayList<>();
+    ArrayAdapter adapterTitle;
     ListView list;
+    SearchView searchView;
     public void openAddBook() {
         Intent intent = new Intent(this, Add_Book.class);
         startActivity(intent);
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             pubHouseList.add(buff.getString(3));
 
         }
-        ArrayAdapter adapterTitle = new ArrayAdapter(this, android.R.layout.simple_list_item_1, titleList);
+        adapterTitle = new ArrayAdapter(this, android.R.layout.simple_list_item_1, titleList);
         list.setAdapter(adapterTitle);
     }
 
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.portrait);
-
+//        txtBook = (EditText) findViewById(R.id.txtBook);
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +79,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        searchView = (SearchView) findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapterTitle.getFilter().filter(newText);
+                return false;
+            }
+        });
         list = (ListView) findViewById(R.id.listaautorow);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                 openPossition(position);
             }
         });
+
+
     }
 
     @Override

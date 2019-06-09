@@ -4,14 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/txtBook"
+    <SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Wpisz tytuł książki, którą chcesz znaleźć"
-        android:textSize="18dp"
-
-        />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnAdd"
