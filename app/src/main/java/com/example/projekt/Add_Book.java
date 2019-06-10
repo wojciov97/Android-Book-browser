@@ -38,7 +38,8 @@ import java.util.Date;
 
 public class Add_Book extends AppCompatActivity {
 
-    private int CAMERA_PERMISSION_CODE = 1, requestCameraCode =1, requestGalleryCode = 2;
+    private int CAMERA_PERMISSION_CODE = 1,GALLERY_PERMISSION_CODE = 2, requestCameraCode =1, requestGalleryCode = 2;
+    private String []  permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
     Button btnPhoto, btnConfirmAdd,btnGallery ;
     String author, title, pubhouse, path;
     EditText txtAuthor, txtTitle, txtPubHouse, txtPath;
@@ -46,27 +47,13 @@ public class Add_Book extends AppCompatActivity {
     ImageView imgPodglad;
     Uri imageURI;
 
-    private void requestCameraPermisson(){
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA )){
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Permisson needed")
-                    .setMessage("To uprawnienie jest potrzebne, ponieważ musisz zrobić zdjęcie okładki")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(Add_Book.this,new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-                        }
-                    })
-                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).create().show();
-        }else{
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-        }
+
+    private void requestNewPermisson(){
+        if( ContextCompat.checkSelfPermission(this, permission[0]) != PackageManager.PERMISSION_GRANTED)
+        ActivityCompat.requestPermissions(this , permission , GALLERY_PERMISSION_CODE);
+        if (ContextCompat.checkSelfPermission(this, permission[1]) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, permission, requestCameraCode);
     }
 
     @Override
@@ -79,12 +66,13 @@ public class Add_Book extends AppCompatActivity {
         btnPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(Add_Book.this, Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
+                if (ContextCompat.checkSelfPermission(Add_Book.this, Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(Add_Book.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
                    path = takePhoto();
                 }
                 else{
-                    requestCameraPermisson();
+                    requestNewPermisson();
 
                 }
 
